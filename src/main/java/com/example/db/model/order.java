@@ -1,5 +1,7 @@
 package com.example.db.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,9 @@ public class order {
   @Column(name = "order_id", nullable = false)
   private Long id;
   
+  @Column(name = "order_date", nullable = false)
+  LocalDateTime date;
+
   @ManyToOne
   @JoinColumn(name = "customer_id", nullable = false)
   private customer customer;
