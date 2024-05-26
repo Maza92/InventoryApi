@@ -12,9 +12,9 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface productRepository extends JpaRepository<product, Long> {
 
-  @Query(value = "SELECT TOP 1 p.product_name FROM product p " + 
-                  "INNER JOIN order_details od ON p.product_id = od.product_id " +
-                  "GROUP BY p.product_name " +
-                  "ORDER BY SUM(od.quantity) DESC;", nativeQuery = true)
+  @Query(value = "SELECT product.product_name FROM product " +
+                  "INNER JOIN order_details ON product.product_id = order_details.product_id " +
+                  "GROUP BY product.product_name " +
+                  "ORDER BY SUM(order_details.quantity) DESC LIMIT 1;", nativeQuery = true)
   String findToSellingProduct();
 }

@@ -1,6 +1,7 @@
 package com.example.db.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,13 @@ public class productService {
       return product;
     
     return null;
+  }
+
+  public Optional<product> getById(Long id) {
+    return repository.findById(id);
+  }
+
+  public void deleteById(Long id) {
+    repository.deleteById(id);
   }
 }

@@ -1,14 +1,12 @@
 package com.example.db.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.db.model.product;
 import com.example.db.service.productService;
@@ -31,5 +29,15 @@ public class productController {
     }
 
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @GetMapping("/api/product/{id}")
+  public Optional<product> searchById(@PathVariable Long id) {
+    return productService.getById(id);
+  }
+
+  @DeleteMapping("/api/product/{id}")
+  public void deleteByid(@PathVariable Long id) {
+    productService.deleteById(id);
   }
 }
