@@ -44,3 +44,6 @@ public class product {
   @JoinColumn(name = "supplier_id")
   private supplier supplier;
 }
+
+
+
