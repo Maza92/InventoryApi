@@ -4,43 +4,62 @@
  */
 package com.jackson.imp;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jackson.imp.model.dto.inventorySummaryDto;
-import com.jackson.imp.model.product;
-import com.jackson.imp.model.supplier;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
-/**
- *
- * @author luis
- */
-public class NewClass {
+import javax.swing.*;
+import java.awt.*;
 
-  public static void main(String[] args) throws JsonProcessingException, IOException {
-    product product = new product();
+public class NewClass extends JFrame {
 
-    product.setName("luis");
-    product.setDescription("fawdadwd");
-    product.setCategory("catefra");
-    product.setPrice(12.2);
-    product.setStock(12);
+    public NewClass(String title) {
+        super(title);
 
-    supplier sup = new supplier(1L, "Devpulse", "rbellino0@jigsy.com");
+        // Crear la serie de datos
+        XYSeries series = new XYSeries("Inventario");
+        series.add(10, 500); // Ejemplo: 10 unidades, $500
+        series.add(15, 300); // Ejemplo: 15 unidades, $300
+        series.add(20, 800); // Ejemplo: 20 unidades, $800
+        // Añadir más datos según sea necesario
 
-    product.setSupplier(sup);
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
 
-    System.out.println(LocalDateTime.now());
-      
-    
+        // Crear el gráfico
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "Cantidad en Inventario vs Precio",
+                "Cantidad en Inventario", "Precio",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false);
 
-    Request rq = new Request();
-    JsonParsing jp = new JsonParsing();
-    
-      System.out.println(jp.parse(product));
-    
+        // Personalizar el gráfico
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(0, false);
+        renderer.setSeriesShapesVisible(0, true);
+        plot.setRenderer(renderer);
 
-  }
+        // Mostrar el gráfico en un panel
+        ChartPanel panel = new ChartPanel(chart);
+        panel.setPreferredSize(new Dimension(800, 600));
+        setContentPane(panel);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            NewClass example = new NewClass("Gráfico de Dispersión de Inventario");
+            example.setSize(800, 600);
+            example.setLocationRelativeTo(null);
+            example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            example.setVisible(true);
+        });
+    }
 }
+

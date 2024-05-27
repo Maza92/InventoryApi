@@ -36,16 +36,20 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PieLabelLinkStyle;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  *
@@ -97,6 +101,11 @@ public class Main extends javax.swing.JFrame {
         JFreeChart chartPie = createPieChart(pieDataset);
         ChartPanel chartPiePanel = new ChartPanel(chartPie);
         BarPanel4.add(chartPiePanel, BorderLayout.CENTER);
+        
+        JFreeChart plotChart = createPlotChart();
+        ChartPanel chartPlot = new ChartPanel(plotChart);
+        chartPlot.setMouseWheelEnabled(true);
+        jPanel7.add(chartPlot, BorderLayout.CENTER);
 
     }
 
@@ -331,6 +340,8 @@ public class Main extends javax.swing.JFrame {
         BarPanel4.setLayout(new java.awt.BorderLayout());
         fastData.add(BarPanel4);
         BarPanel4.setBounds(20, 220, 460, 310);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
         fastData.add(jPanel7);
         jPanel7.setBounds(500, 220, 460, 310);
 
@@ -614,10 +625,45 @@ public class Main extends javax.swing.JFrame {
         
         return dataset;
     }
+    
+    private JFreeChart createPlotChart() {
+        // Crear la serie de datos
+        XYSeries series = new XYSeries("Inventario");
+        
+        for (product product1 : products) {
+            series.add(product1.getStock(), (Number) ( product1.getStock() * product1.getPrice() ));
+        }
+        
+//        series.add(10, 500); // Ejemplo: 10 unidades, $500
+//        series.add(15, 300); // Ejemplo: 15 unidades, $300
+//        series.add(20, 800); // Ejemplo: 20 unidades, $800
+//        // Añadir más datos según sea necesario
+
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
+
+        // Crear el gráfico
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "Cantidad en Inventario vs Precio",
+                "Cantidad en Inventario", "Precio",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        // Personalizar el gráfico
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(0, false);
+        renderer.setSeriesShapesVisible(0, true);
+        plot.setRenderer(renderer);
+
+        // Mostrar el gráfico en un panel
+        return chart;
+    }
 
     private JFreeChart createBarChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
-                "Capacidad de inventario", // Chart title
+                "Productos por proveedor", // Chart title
                 "Category", // Category axis label
                 "Value", // Value axis label
                 dataset, // Data
@@ -642,7 +688,7 @@ public class Main extends javax.swing.JFrame {
 
     private JFreeChart createPieChart(final PieDataset dataset) {
         final JFreeChart chart = ChartFactory.createPieChart(
-                "Pie Chart Demo 2", // chart title
+                "Capacidad de inventario", // chart title
                 dataset, // dataset
                 true, // include legend
                 true,
