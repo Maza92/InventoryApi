@@ -7,6 +7,7 @@ package com.jackson.imp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,4 +33,7 @@ public class JsonParsing {
         return om.writeValueAsString(object);
     }
 
+    public String toJson(Object obj) throws IOException {
+        return om.writeValueAsString(obj);
+    }
 }

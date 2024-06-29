@@ -92,7 +92,7 @@ public class Request {
         }
     }
 
-    public void postRequest(String endpoint, String requestBody) throws MalformedURLException, IOException {
+    public String postRequest(String endpoint, String requestBody) throws MalformedURLException, IOException {
         url = new URL(api + endpoint);
         connection = (HttpURLConnection) url.openConnection();
 
@@ -106,8 +106,20 @@ public class Request {
             os.write(input, 0, input.length);
         }
 
-        int responseCode = connection.getResponseCode();
-        System.out.println("Response Code: " + responseCode);
+        InputStream is = connection.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        StringBuilder jsonResponse = new StringBuilder();
+
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            jsonResponse.append(line);
+        }
+
+        br.close();
+        is.close();
+
+        return jsonResponse.toString();
     }
 
     public String deleteRequest(String endpoint) throws MalformedURLException, IOException {

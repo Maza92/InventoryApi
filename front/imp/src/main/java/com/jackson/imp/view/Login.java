@@ -5,6 +5,14 @@
 package com.jackson.imp.view;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.jackson.imp.JsonParsing;
+import com.jackson.imp.Request;
+import com.jackson.imp.model.user.UserCredentialDto;
+import com.jackson.imp.model.user.UserVerificationResponseDto;
+import java.awt.Color;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,9 +29,13 @@ public class Login extends javax.swing.JFrame {
      */
     Main mainPanel;
     int intentos = 0;
+
     public Login() {
         initComponents();
         text.setText("<html><center>Ingrese su correo electrónico y contraseña para acceder a su cuenta.</center></html>");
+        PasswordField.setText("Password");
+        PasswordField.setEchoChar((char) 0);
+        PasswordField.setForeground(Color.decode("#CCCCCC"));
     }
 
     /**
@@ -38,11 +50,13 @@ public class Login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         text = new javax.swing.JLabel();
-        Pass = new javax.swing.JTextField();
-        Email = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        EmailField = new javax.swing.JTextField();
+        PasswordField = new javax.swing.JPasswordField();
+        jButton1 = new javax.swing.JButton();
+        PassCheckBox = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,21 +77,6 @@ public class Login extends javax.swing.JFrame {
         text.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(text, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 280, -1));
 
-        Pass.setBackground(new java.awt.Color(255, 255, 255));
-        Pass.setForeground(new java.awt.Color(102, 102, 102));
-        Pass.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
-        Pass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PassActionPerformed(evt);
-            }
-        });
-        jPanel1.add(Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 320, 40));
-
-        Email.setBackground(new java.awt.Color(255, 255, 255));
-        Email.setForeground(new java.awt.Color(102, 102, 102));
-        Email.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
-        jPanel1.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 320, 40));
-
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
         jLabel2.setText("Email");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
@@ -86,18 +85,63 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setText("Contraseña");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, -1, -1));
 
-        jLabel5.setBackground(new java.awt.Color(11, 11, 11));
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Sign in");
-        jLabel5.setOpaque(true);
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel5MousePressed(evt);
+        EmailField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        EmailField.setForeground(new java.awt.Color(204, 204, 204));
+        EmailField.setText("ejemplo@email.com");
+        EmailField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                EmailFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                EmailFieldFocusLost(evt);
             }
         });
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 320, 40));
+        jPanel1.add(EmailField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 310, 40));
+
+        PasswordField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        PasswordField.setForeground(new java.awt.Color(204, 204, 204));
+        PasswordField.setText("Password");
+        PasswordField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                PasswordFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                PasswordFieldFocusLost(evt);
+            }
+        });
+        jPanel1.add(PasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 310, 40));
+
+        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton1.setText("Login");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton1MousePressed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 230, 40));
+
+        PassCheckBox.setText("Mostrar");
+        PassCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                PassCheckBoxMousePressed(evt);
+            }
+        });
+        PassCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PassCheckBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(PassCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 260, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Registro");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel4MousePressed(evt);
+            }
+        });
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,41 +151,102 @@ public class Login extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void PassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassActionPerformed
+    private void EmailFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFieldFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_PassActionPerformed
+        if (EmailField.getText().equals("ejemplo@email.com")) {
+            EmailField.setText("");
+            EmailField.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_EmailFieldFocusGained
 
-    private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
+    private void EmailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFieldFocusLost
         // TODO add your handling code here:
-        String email = Email.getText();
-        String password = Pass.getText();
+        if (EmailField.getText().equals("")) {
+            EmailField.setForeground(Color.decode("#CCCCCC"));
+            EmailField.setText("ejemplo@email.com");
+        }
+    }//GEN-LAST:event_EmailFieldFocusLost
 
-        if (intentos > 3) {
-            JOptionPane.showMessageDialog(this, "No tienes mas intentos");
+    private void PassCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PassCheckBoxActionPerformed
+
+    private void PasswordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PasswordFieldFocusGained
+        // TODO add your handling code here:
+        PassCheckBox.setSelected(false);
+        String password = String.valueOf(PasswordField.getPassword());
+
+        if (password.equals("Password")) {
+            PasswordField.setText("");
+            PasswordField.setForeground(Color.black);
+            PasswordField.setEchoChar('*');
+        }
+    }//GEN-LAST:event_PasswordFieldFocusGained
+
+    private void PasswordFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PasswordFieldFocusLost
+        // TODO add your handling code here:
+        String password = String.valueOf(PasswordField.getPassword());
+
+        if (password.toLowerCase().equals("Password") || password.toLowerCase().equals("")) {
+            PasswordField.setText("Password");
+            PasswordField.setEchoChar((char) 0);
+            PasswordField.setForeground(Color.decode("#CCCCCC"));
+        }
+    }//GEN-LAST:event_PasswordFieldFocusLost
+
+    private void PassCheckBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PassCheckBoxMousePressed
+        // TODO add your handling code here:
+        if (!PassCheckBox.isSelected()) {
+            PasswordField.setEchoChar((char) 0);
+        } else {
+            PasswordField.setEchoChar('*');
+        }
+    }//GEN-LAST:event_PassCheckBoxMousePressed
+
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        // TODO add your handling code here:
+        UserCredentialDto credential = new UserCredentialDto(EmailField.getText(), String.valueOf(PasswordField.getPassword()));
+        UserVerificationResponseDto verify = null;
+        JsonParsing jp = new JsonParsing();
+        Request request = new Request();
+        try {
+            verify = jp.parse(request.postRequest("api/auth/login", jp.toJson(credential)), UserVerificationResponseDto.class);
+//            verify = jsonUtil.fromJson(client.post("/api/auth/login", jsonUtil.toJson(credential)), UserVerificationResponseDto.class);
+        } catch (IOException ex) { System.out.println("IOException"); }
+        
+        if (verify.isVerified()) {
+            try {
+                JOptionPane.showMessageDialog(this, "Credenciales correctas");
+                Main main = new Main();
+                main.setVisible(true);
+                this.dispose();
+                
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return;
         }
+        
+        JOptionPane.showMessageDialog(this, "Credenciales incorrectas");
+        
+    }//GEN-LAST:event_jButton1MousePressed
 
-        if (email.equalsIgnoreCase("maza05599@gmail.com")) {
-            if (password.equalsIgnoreCase("edison12")) {
-                try {
-                    mainPanel = new Main();
-                    mainPanel.setVisible(true);
-                    this.dispose();
-                } catch (Exception ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            intentos ++;
-            JOptionPane.showMessageDialog(this, "Correo incorrecto");
-        }
-    }//GEN-LAST:event_jLabel5MousePressed
+    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        // TODO add your handling code here:
+        Register registro = new Register();
+        registro.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel4MousePressed
 
     /**
      * @param args the command line arguments
@@ -185,12 +290,14 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Email;
-    private javax.swing.JTextField Pass;
+    private javax.swing.JTextField EmailField;
+    private javax.swing.JCheckBox PassCheckBox;
+    private javax.swing.JPasswordField PasswordField;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel text;
     // End of variables declaration//GEN-END:variables

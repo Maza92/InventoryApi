@@ -72,10 +72,14 @@ public class Main extends javax.swing.JFrame {
         request = new Request();
         json = new JsonParsing();
 
-        inventorySummaryDto summary = json.parse(request.getRequest("api/summary"), inventorySummaryDto.class);
+        String kson = request.getRequest("api/summary");
+        System.out.println(kson);
+        inventorySummaryDto summary = json.parse(kson, inventorySummaryDto.class);
 
         OutputTotalDeProductos.setText(String.valueOf(summary.getTotalProducts()));
         OutputProductTop.setText(summary.getProductsTop().toString());
+
+//        OutputProductTop.setText("dwda");
         OutputProductLowStock.setText(summary.getProductoStock().toString());
         DecimalFormat df = new DecimalFormat("#,###.00");
 
@@ -505,44 +509,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Main().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+    
 
     private void fade(Component component, boolean fadeIn) {
         int fadeSteps = 10;
@@ -581,7 +548,9 @@ public class Main extends javax.swing.JFrame {
 
     private CategoryDataset createBarDataset() throws IOException {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        List<product> products = json.parseArray(request.getRequest("api/product"), product.class);
+        String list = request.getRequest("api/product");
+        System.out.println(list);
+        List<product> products = json.parseArray(list, product.class);
 
         Map<String, Integer> supplierCountMap = new HashMap<>();
 

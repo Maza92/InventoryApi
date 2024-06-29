@@ -248,7 +248,7 @@ public class AddProducts extends javax.swing.JFrame {
             // TODO add your handling code here:
 
             if (jLabel2.getText().equals("Añadir producto")) {
-                
+
                 product add = new product();
 
                 add.setId(this.id);
@@ -258,17 +258,10 @@ public class AddProducts extends javax.swing.JFrame {
                 add.setStock(Integer.parseInt(stock.getText()));
                 add.setPrice(Double.parseDouble(price.getText()));
 
-                String supplierName = (String) jComboBox1.getSelectedItem();
-                System.out.println(supplierName);
-
-                for (supplier supplier1 : suppliers) {
-                    if (supplierName.equalsIgnoreCase(supplier1.getName())) {
-                        add.setSupplier(supplier1);
-                    }
-                }
+                add.setSupplier(searhSupplier());
 
                 String json = jp.parse(add);
-                
+
                 rq.postRequest("api/product", jp.parse(add));
             } else if (jLabel2.getText().equals("Actualizar")) {
 
@@ -281,14 +274,7 @@ public class AddProducts extends javax.swing.JFrame {
                 add.setStock(Integer.parseInt(stock.getText()));
                 add.setPrice(Double.parseDouble(price.getText()));
 
-                String supplierName = (String) jComboBox1.getSelectedItem();
-                System.out.println(supplierName);
-
-                for (supplier supplier1 : suppliers) {
-                    if (supplierName.equalsIgnoreCase(supplier1.getName())) {
-                        add.setSupplier(supplier1);
-                    }
-                }
+                add.setSupplier(searhSupplier());
 
                 String json = jp.parse(add);
 
@@ -310,6 +296,18 @@ public class AddProducts extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jLabel2MousePressed
+
+    private supplier searhSupplier() {
+        String supplierName = (String) jComboBox1.getSelectedItem();
+        System.out.println(supplierName);
+
+        for (supplier supplier1 : suppliers) {
+            if (supplierName.equalsIgnoreCase(supplier1.getName())) {
+                return supplier1;
+            }
+        }
+        return null;
+    }
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
         // TODO add your handling code here:
@@ -335,41 +333,7 @@ public class AddProducts extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new AddProducts(false).setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(AddProducts.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+    
 
     public void updateProduct(product product) {
         Name.setText(product.getName());
@@ -379,15 +343,6 @@ public class AddProducts extends javax.swing.JFrame {
         stock.setText(String.valueOf(product.getStock()));
 
         jComboBox1.setSelectedIndex((int) (product.getSupplier().getId() - 1));
-
-//        String supplierName = (String) jComboBox1.getSelectedItem();
-//        System.out.println(supplierName);
-//
-//        for (supplier supplier1 : suppliers) {
-//            if (supplierName.equalsIgnoreCase(supplier1.getName())) {
-//                add.setSupplier(supplier1);
-//            }
-//        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Description;
