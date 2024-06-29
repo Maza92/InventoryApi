@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jackson.imp.JsonParsing;
 import com.jackson.imp.Request;
 import com.jackson.imp.model.product;
+import com.jackson.imp.model.productPut;
 import com.jackson.imp.model.supplier;
 import java.awt.Color;
 import java.io.IOException;
@@ -27,7 +28,8 @@ public class AddProducts extends javax.swing.JFrame {
     ArrayList<supplier> suppliers;
     Request rq;
     JsonParsing jp;
-    Products main;
+    CrudProducts main;
+    Long id;
 
     public AddProducts(boolean estatus) throws IOException, Exception {
         setUndecorated(true);
@@ -43,7 +45,7 @@ public class AddProducts extends javax.swing.JFrame {
         for (supplier supplier1 : suppliers) {
             jComboBox1.addItem(supplier1.getName());
         }
-        
+
         if (estatus == true) {
             jLabel2.setText("Actualizar");
         } else {
@@ -93,10 +95,10 @@ public class AddProducts extends javax.swing.JFrame {
 
         exitre.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Symbols Nerd Font", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("<-");
+        jLabel1.setText("󰌍");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel1MouseEntered(evt);
@@ -238,37 +240,71 @@ public class AddProducts extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         try {
             // TODO add your handling code here:
-            product add = new product();
 
-            add.setName(Name.getText());
-            add.setCategory(category.getText());
-            add.setDescription(Description.getText());
-            add.setStock(Integer.parseInt(stock.getText()));
-            add.setPrice(Double.parseDouble(price.getText()));
+            if (jLabel2.getText().equals("Añadir producto")) {
+                
+                product add = new product();
 
-            String supplierName = (String) jComboBox1.getSelectedItem();
-            System.out.println(supplierName);
+                add.setId(this.id);
+                add.setName(Name.getText());
+                add.setCategory(category.getText());
+                add.setDescription(Description.getText());
+                add.setStock(Integer.parseInt(stock.getText()));
+                add.setPrice(Double.parseDouble(price.getText()));
 
-            for (supplier supplier1 : suppliers) {
-                if (supplierName.equalsIgnoreCase(supplier1.getName())) {
-                    add.setSupplier(supplier1);
+                String supplierName = (String) jComboBox1.getSelectedItem();
+                System.out.println(supplierName);
+
+                for (supplier supplier1 : suppliers) {
+                    if (supplierName.equalsIgnoreCase(supplier1.getName())) {
+                        add.setSupplier(supplier1);
+                    }
                 }
+
+                String json = jp.parse(add);
+                
+                rq.postRequest("api/product", jp.parse(add));
+            } else if (jLabel2.getText().equals("Actualizar")) {
+
+                productPut add = new productPut();
+
+                add.setId(this.id);
+                add.setName(Name.getText());
+                add.setCategory(category.getText());
+                add.setDescription(Description.getText());
+                add.setStock(Integer.parseInt(stock.getText()));
+                add.setPrice(Double.parseDouble(price.getText()));
+
+                String supplierName = (String) jComboBox1.getSelectedItem();
+                System.out.println(supplierName);
+
+                for (supplier supplier1 : suppliers) {
+                    if (supplierName.equalsIgnoreCase(supplier1.getName())) {
+                        add.setSupplier(supplier1);
+                    }
+                }
+
+                String json = jp.parse(add);
+
+                System.out.println(jp.parse(add));
+                rq.putRequest("api/product", jp.parse(add));
             }
 
-            System.out.println(jp.parse(add));
-            rq.postRequest("api/product", jp.parse(add));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(AddProducts.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(AddProducts.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            main = new Products();
+            main = new CrudProducts();
             main.setVisible(true);
-            main.updateTable();
+            this.dispose();
         } catch (Exception ex) {
             Logger.getLogger(AddProducts.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -289,7 +325,7 @@ public class AddProducts extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
         try {
-            main = new Products();
+            main = new CrudProducts();
         } catch (Exception ex) {
             Logger.getLogger(AddProducts.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -341,7 +377,7 @@ public class AddProducts extends javax.swing.JFrame {
         Description.setText(product.getDescription());
         price.setText(String.valueOf(product.getPrice()));
         stock.setText(String.valueOf(product.getStock()));
-        
+
         jComboBox1.setSelectedIndex((int) (product.getSupplier().getId() - 1));
 
 //        String supplierName = (String) jComboBox1.getSelectedItem();

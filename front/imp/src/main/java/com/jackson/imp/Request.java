@@ -55,6 +55,43 @@ public class Request {
         return jsonResponse.toString();
     }
 
+    public void putRequest(String endpoint, String requestBody) throws MalformedURLException, IOException {
+        url = new URL(api + endpoint);
+        connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("PUT");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setDoOutput(true);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = requestBody.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+
+        if (responseCode == 200) {
+            InputStream is = connection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder jsonResponse = new StringBuilder();
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                jsonResponse.append(line);
+            }
+
+            br.close();
+            is.close();
+
+            System.out.println("Response: " + jsonResponse.toString());
+        } else {
+            System.out.println("Request failed: " + connection.getResponseMessage());
+        }
+    }
+
     public void postRequest(String endpoint, String requestBody) throws MalformedURLException, IOException {
         url = new URL(api + endpoint);
         connection = (HttpURLConnection) url.openConnection();

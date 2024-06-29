@@ -13,9 +13,8 @@ import lombok.Data;
  * @author luis
  */
 @Data
-public class product {
+public class productPut {
   
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Long id;
   private String name;
   private String description;
@@ -23,10 +22,10 @@ public class product {
   private Double price;
   private Integer stock;
   private supplier supplier;
-  public product() {
+  public productPut() {
   }
 
-  public product(Long id, String name, String description, String category, Double price, Integer stock, supplier supplier) {
+  public productPut(Long id, String name, String description, String category, Double price, Integer stock, supplier supplier) {
     this.id = id;
     this.name = name;
     this.description = description;

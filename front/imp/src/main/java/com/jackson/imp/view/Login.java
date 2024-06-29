@@ -4,9 +4,11 @@
  */
 package com.jackson.imp.view;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -168,6 +170,12 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        FlatLightLaf.setup();
+        UIManager.put("Button.arc", 12);
+        UIManager.put("Component.arc", 12);
+        UIManager.put("ProgressBar.arc", 12);
+        UIManager.put("TextComponent.arc", 12);
+        UIManager.put("Table.arc", 12);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

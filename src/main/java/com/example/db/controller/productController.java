@@ -13,35 +13,37 @@ import com.example.db.service.productService;
 
 @RestController
 public class productController {
-  
-  @Autowired
-  productService productService;
 
-  @GetMapping("/api/product")
-  public List<product> getProducts() {
-    return productService.getAll();
-  }
+    @Autowired
+    productService productService;
 
-  @PostMapping("/api/product")
-  public ResponseEntity<product> saveProduct(@RequestBody product product) {
-    if (productService.setProduct(product) == null) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    @GetMapping("/api/product")
+    public List<product> getProducts() {
+        return productService.getAll();
     }
 
-    return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
+    @PostMapping("/api/product")
+    public ResponseEntity<product> saveProduct(@RequestBody product product) {
+        if (productService.setProduct(product) == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-  @GetMapping("/api/product/{id}")
-  public Optional<product> searchById(@PathVariable Long id) {
-    return productService.getById(id);
-  }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-  @DeleteMapping("/api/product/{id}")
-  public void deleteByid(@PathVariable Long id) {
-    productService.deleteById(id);
-  }
+    @GetMapping("/api/product/{id}")
+    public Optional<product> searchById(@PathVariable Long id) {
+        return productService.getById(id);
+    }
+
+    @DeleteMapping("/api/product/{id}")
+    public void deleteByid(@PathVariable Long id) {
+        productService.deleteById(id);
+    }
+
+    @PutMapping("/api/product")
+    public ResponseEntity<product> updateProduct(@RequestBody product product) {
+        productService.setProduct(product);
+        return ResponseEntity.ok(product);
+    }
 }
-
-
-
-

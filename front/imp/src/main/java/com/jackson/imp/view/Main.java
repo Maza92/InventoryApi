@@ -60,7 +60,7 @@ public class Main extends javax.swing.JFrame {
     Request request;
     JsonParsing json;
 
-    Products panel;
+    CrudProducts panel;
     ArrayList<product> products;
 
     public Main() throws IOException, Exception {
@@ -497,7 +497,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel4MousePressed
 
     private void panelView() throws Exception {
-        panel = new Products();
+        panel = new CrudProducts();
         panel.setVisible(true);
         this.dispose();
     }
@@ -634,11 +634,6 @@ public class Main extends javax.swing.JFrame {
             series.add(product1.getStock(), (Number) ( product1.getStock() * product1.getPrice() ));
         }
         
-//        series.add(10, 500); // Ejemplo: 10 unidades, $500
-//        series.add(15, 300); // Ejemplo: 15 unidades, $300
-//        series.add(20, 800); // Ejemplo: 20 unidades, $800
-//        // Añadir más datos según sea necesario
-
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
 
