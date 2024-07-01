@@ -351,9 +351,9 @@ public class Main extends javax.swing.JFrame {
 
         BarPanel.setLayout(new java.awt.BorderLayout());
         fastData.add(BarPanel);
-        BarPanel.setBounds(20, 550, 940, 240);
+        BarPanel.setBounds(20, 550, 940, 280);
 
-        getContentPane().add(fastData, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 980, 810));
+        getContentPane().add(fastData, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 980, 850));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(229, 231, 235)));
@@ -585,7 +585,7 @@ public class Main extends javax.swing.JFrame {
             total += product1.getStock();
         }
         System.out.println(total);
-        int capacidadDeInventario = 15000;
+        int capacidadDeInventario = 50000;
         
         double porcentajeRestante = capacidadDeInventario - total;
         
