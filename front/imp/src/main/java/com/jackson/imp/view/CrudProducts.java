@@ -119,7 +119,6 @@ public class CrudProducts extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Jtable = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
         FilterField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -165,10 +164,6 @@ public class CrudProducts extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 940, 470));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setText("Filter By");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 70, 140, 40));
-
         FilterField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         FilterField.setForeground(new java.awt.Color(0, 0, 0));
         FilterField.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -179,7 +174,7 @@ public class CrudProducts extends javax.swing.JFrame {
                 FilterFieldFocusLost(evt);
             }
         });
-        jPanel1.add(FilterField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 760, 40));
+        jPanel1.add(FilterField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 920, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -310,7 +305,6 @@ public class CrudProducts extends javax.swing.JFrame {
     private javax.swing.JTextField FilterField;
     private javax.swing.JTable Jtable;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
