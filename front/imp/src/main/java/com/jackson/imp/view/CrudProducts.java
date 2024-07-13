@@ -230,7 +230,6 @@ public class CrudProducts extends javax.swing.JFrame {
     public void updateTable() throws Exception {
         products = (ArrayList<product>) getProducts();
         for (product product : products) {
-            System.out.println(product.getId());
             Object[] row = {product.getName(), product.getDescription(), product.getPrice(), product.getStock(), new JButton("Edit"), new JButton("Del")};
             model.addRow(row);
         }
@@ -239,9 +238,7 @@ public class CrudProducts extends javax.swing.JFrame {
     private void updateTable(ArrayList<product> productList) {
         for (product product : productList) {
             JButton editButton = new JButton("Edit");
-            editButton.setFont(new Font("Symbols Nerd Font", Font.PLAIN, 16));
             JButton rmButton = new JButton("Del");
-            rmButton.setFont(new Font("Symbols Nerd Font", Font.PLAIN, 20));
 
             Object[] row = {product.getName(), product.getDescription(), product.getPrice(), product.getStock(), editButton, rmButton};
             model.addRow(row);
